@@ -1,0 +1,35 @@
+// model
+import mongoose  from 'mongoose';
+
+const RendVousSchema= new mongoose.Schema({
+    prenom:{
+        type:'string',
+        maxlength:'60',
+        required:'true'
+     },
+    sex:{
+        type:'string',
+        maxlength:'1',
+        require:'true'
+    },
+    description:{
+        type:'string',
+        lowercase:'true'
+    },
+    tel:{
+     type:"Number",
+     maxlength:13
+
+    },
+    age:{
+        type:'Number',
+        default:0
+    },
+     date:{
+        type: Date,
+        default:new Date()
+    }
+
+})
+const RendVous =mongoose.model("RendVous",RendVousSchema)
+export  default RendVous;
