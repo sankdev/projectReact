@@ -1,0 +1,119 @@
+// redux-toolkit
+
+import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit"
+import *as api from '../api'
+
+
+export const getAppointApi=createAsyncThunk("appoints/getappointApi",
+async({rejectwithValue})=>{
+    try {
+        const response=await api.fecthAppoint()
+        console.log(response)
+        return response.data
+    } catch (error) {
+        return rejectwithValue(error.response.data)  
+    }
+})
+export const createAppointApi=createAsyncThunk("appoints/createAppointApi",
+async(newAppoint,{rejectwithValue})=>{
+   try {
+       const response = await api.createAppoint(newAppoint)
+       return response.data
+   } catch (error) {
+       return rejectwithValue('error.response.data')
+   }
+})
+export const updateappointApi =createAsyncThunk("appoints/updateappointApi",
+async({updatedAppoint,id},{rejectwithValue})=>{
+ 
+    try {
+        const response=await api.updateappoint(updatedAppoint,id)
+        return response.data
+    } catch (error) {
+        return rejectwithValue(error.response.data)
+    }
+})
+export const deleteAppointApi=createAsyncThunk("appoints/deleteAppointsApi",
+async (id,{rejectwithValue})=>{
+
+    try {
+        const response= await api.deleteAppoint(id)
+        return response.data
+    } catch (error) {
+        return rejectwithValue(error.response.data)
+    }
+})
+const initialState={   
+   appoint:{},
+    appoints:[],
+    error:'',
+    loading:false
+}
+const appointSlice= createSlice({
+    name:"appoints",
+    initialState,
+//     reducers:{
+//         getAppoint:(state,{payload})=>{
+//             state.appoint=payload
+//         },
+//         createAppoint:(state,{payload})=>{
+//             state.appoint.push(payload)
+//         }
+//    },
+    extraReducers:{
+        [getAppointApi.pending]:(state,action)=>{
+            state.loading=true
+            state.appoints=[action.payload]
+        },
+        [getAppointApi.fulfilled]:(state,action)=>{
+            state.loading=false ;
+            state.appoints= action.payload 
+        },
+        [getAppointApi.rejected]:(state,{payload})=>{
+            state.error= payload
+        },
+
+        [createAppointApi.pending]:(state,action)=>{
+            state.loading=true
+        },
+        [createAppointApi.fulfilled]:(state,action)=>{
+            state.loading=false;
+            state.appoints=[action.payload]
+        },
+        [createAppointApi.rejected]:(state,action)=>{
+            state.error=action.payload
+        },
+
+
+        [deleteAppointApi.pending]:(state,action)=>{
+            state.loading=true
+        },
+        [deleteAppointApi.fulfilled]:(state,action)=>{
+            state.loading=false;
+            const {arg:{id}}=action.meta
+            if(id){
+                state.appoints=state.appoints.filter((item)=>item._id !== id)
+            }
+        },
+        [deleteAppointApi.rejected]:(state,action)=>{
+            state.error=action.payload
+        },
+
+
+        [updateappointApi.pending]:(state,action)=>{
+            state.loading=true
+        },
+        [updateappointApi.fulfilled]:(state,action)=>{
+            state.loading=false;
+            const {arg:{id}}=action.meta
+            if(id){
+                state.appoints=state.appoints.map((item)=>item._id === id?action.payload:item)
+            }
+        },
+        [updateappointApi.rejected]:(state,action)=>{
+            state.error=action.payload.message
+        },
+    }
+})
+//export const {getAppoint,createAppoint}=appointSlice.actions;
+export default appointSlice.reducer
