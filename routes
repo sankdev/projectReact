@@ -1,0 +1,41 @@
+ // all routes 
+ 
+ import express from 'express'
+const router=express.Router();
+import {getRendVous , UpdateAppoint,deleteApoint,CreatePost} from '../controllers/RendVousCtrl.js'
+// import  CreatePost from '../controllers/RendVousCtrl.js'
+import  {postConsultation,updateConsult,getConsultaion }from '../controllers/ConsultationCtrl.js'
+
+
+import { getOrdonance ,  updateOrdonance,createOrdonance,deleteOrdonance}from '../controllers/OrdonanceCtrl.js'
+// const updateOrdonance=require('../controllers/OrdonanceCtrl')
+// const CreateOrdonance=require('../controllers/OrdonanceCtrl')
+// const deleteOrdonance=require('../controllers/OrdonanceCtrl')
+import  {getAccouch,UpdateAccouch, CreateAccouch , deleteAccouch } from '../controllers/AcouchCtrl.js'
+// const updateAccouch=require('../controllers/AcouchCtrl')
+// const CreateAccouch=require('../controllers/AcouchCtrl') 
+// const deleteAccouch=require('../controllers/AcouchCtrl')
+ import {signin,signup} from "../controllers/UsersCtrl.js"
+
+ router.post('/signin',signin)
+ router.post('/signup',signup)
+router.get('/',getRendVous)        that's a appointment route
+router.post('/appoint',CreatePost) 
+ router.delete('/:id',deleteApoint)
+router.patch('/update/:id',UpdateAppoint)
+
+router.get('/consultation',getConsultaion) 
+router.post('/consultation',postConsultation)
+router.patch('/consultation/:id',updateConsult)
+
+ router.get('/ordonance',getOrdonance)
+router.patch('/ordonance/:id', updateOrdonance)
+router.post('/ordonance',createOrdonance)
+router.delete('/ordonance/:id',deleteOrdonance)
+  
+router.get('/accouchement',getAccouch)
+router.patch('/modifier',UpdateAccouch)
+router.post('/accouchement',CreateAccouch)
+router.delete('/accouchement/:id',deleteAccouch) 
+
+export default router;
