@@ -1,0 +1,22 @@
+// reducer appointment
+
+
+const appointReducer =(appoints=[],action)=>{
+    switch (action.types) {
+        case 'FETCH_ALL':
+            return {
+                ...appoints, appoints:[appoints, action.payload]
+                }
+          case'UPDATE':
+          return appoints.map((post)=> post._id=action.payload._id? action.payload:post);
+         
+            case'CREATE':
+             return [...appoints, action.payload]
+             case'DELETE':
+             return appoints.filter((post)=>post._id !== action.payload)
+            
+         default:
+            return appoints
+    }
+}
+export default appointReducer
